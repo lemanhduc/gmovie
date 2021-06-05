@@ -32,8 +32,37 @@ public class MovieListController {
         return this._movieRepository.save(params);
     }
 
-//    @GetMapping(value = "/gmdb/movies/{id}")
-//    public User Get(@PathVariable int id) {
-//        return userService.Get(id);
-//    }
+    @GetMapping(value = "/gmdb/{id}")
+    public GMovies Get(@PathVariable int id) {
+        return this._movieRepository.findById(id).get();
+    }
+
+    @GetMapping(value = "/gmdb/title/{title}")
+    public GMovies Get(@PathVariable String title) {
+        GMovies result = this._movieRepository.findByTitle(title);
+        if (result == null) {
+            GMovies response = new GMovies();
+            response.setDescription("does not exist");
+            return response;
+        }
+        return result;
+    }
+
+    @PatchMapping("/rating/{movieRating}/{review}/{id}")
+    public GMovies create(@PathVariable int movieRating, @PathVariable String review, @PathVariable int id) {
+        GMovies movie = this._movieRepository.findById(id).get();
+        if (movieRating == 0) {
+            movie.setDescription("Rating is required with Review");
+            return movie;
+        }
+        else {
+            movie.setReview(review);
+            movie.setRating(movieRating);
+            return this._movieRepository.save(movie);
+        }
+    }
+
+
+
+
 }

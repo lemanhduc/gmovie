@@ -8,4 +8,6 @@ import javax.transaction.Transactional;
 
 @Repository
 public interface GmovieRepository extends CrudRepository<GMovies, Integer> {
+
+    public GMovies findByTitle(String title);
 }
